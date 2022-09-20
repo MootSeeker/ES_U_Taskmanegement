@@ -71,14 +71,14 @@ int main(void)
 				(const char *) "ldTask1",
 				configMINIMAL_STACK_SIZE,
 				NULL,
-				2,
+				1,
 				NULL);
 	
 	xTaskCreate( vLedPairTwo,
 				(const char *) "ldTask2",
 				configMINIMAL_STACK_SIZE,
 				NULL,
-				2,
+				1,
 				NULL);
 	
 	xTaskCreate( vLedPairThree,
