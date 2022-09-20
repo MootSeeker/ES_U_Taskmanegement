@@ -201,20 +201,20 @@ void vButtonTask(void *pvParameters)
 // Led blinks tasks which contain each two leds
 void vLedPairOne( void *pvParameters )
 {
-	PORTF.DIRSET |= (1 << 1) | (1 << 0); /*LED1 & LED2*/
-	PORTF.OUT |= 0x03;
+	PORTF.DIRSET = (1 << 1) | (1 << 0); /*LED1 & LED2*/
+	PORTF.OUTCLR = 0x03;
 	
 	for(;;)
 	{
-		PORTF.OUTTGL = 0x03;
+		PORTF.OUTTGL = 0x00;				//Changed this value from 0x03 to 0x00
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
 }
 
 void vLedPairTwo( void *pvParameters )
 {
-	PORTF.DIRSET |= (1 << 3) | (1 << 2) ; /*LED4 & LED3*/
-	PORTF.OUT |= 0x0F;
+	PORTF.DIRSET = (1 << 3) | (1 << 2) ; /*LED4 & LED3*/
+	PORTF.OUTCLR = 0x0F;
 		
 	for(;;)
 	{
@@ -225,24 +225,24 @@ void vLedPairTwo( void *pvParameters )
 
 void vLedPairThree( void *pvParameters )
 {
-	PORTE.DIRSET |= (1 << 1) | (1 << 0); /*LED5 & LED6*/
-	PORTE.OUT |= 0x03;
+	PORTE.DIRSET = (1 << 1) | (1 << 0); /*LED5 & LED6*/
+	PORTE.OUTCLR = 0x0F;
 	
 	for(;;)
 	{
-		PORTE.OUTTGL = 0x03;
+		PORTE.OUTTGL = 0x00;						// Changed this value from 0x03 to 0x00
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
 }
 
 void vLedPairFour( void *pvParameters )
 {
-	PORTE.DIRSET |= (1 << 3) | (1 << 2) ; /*LED7 & LED8*/
-	PORTE.OUT |= 0x0F;
+	PORTE.DIRSET = (1 << 3) | (1 << 2) ; /*LED7 & LED8*/
+	PORTE.OUTCLR = 0x0C;
 	
 	for(;;)
 	{
-		PORTE.OUTTGL |= 0x0F;
+		PORTE.OUTTGL |= 0x0C;
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
 }
