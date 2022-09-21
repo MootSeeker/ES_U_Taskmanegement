@@ -206,7 +206,7 @@ void vLedPairOne( void *pvParameters )
 	
 	for(;;)
 	{
-		PORTF.OUTTGL = 0x00;				//Changed this value from 0x03 to 0x00
+		PORTF.OUTTGL = 0x03;				//Changed this value from 0x03 to 0x00
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
 }
@@ -214,11 +214,11 @@ void vLedPairOne( void *pvParameters )
 void vLedPairTwo( void *pvParameters )
 {
 	PORTF.DIRSET = (1 << 3) | (1 << 2) ; /*LED4 & LED3*/
-	PORTF.OUTCLR = 0x0F;
+	PORTF.OUTCLR = 0x0C;
 		
 	for(;;)
 	{
-		PORTF.OUTTGL |= 0x0F;
+		PORTF.OUTTGL = 0x0C;
 		vTaskDelay(100 / portTICK_RATE_MS);		
 	}
 }
@@ -226,11 +226,11 @@ void vLedPairTwo( void *pvParameters )
 void vLedPairThree( void *pvParameters )
 {
 	PORTE.DIRSET = (1 << 1) | (1 << 0); /*LED5 & LED6*/
-	PORTE.OUTCLR = 0x0F;
+	PORTE.OUTCLR = 0x03;
 	
 	for(;;)
 	{
-		PORTE.OUTTGL = 0x00;						// Changed this value from 0x03 to 0x00
+		PORTE.OUTTGL = 0x03;						// Changed this value from 0x03 to 0x00
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
 }
@@ -242,7 +242,7 @@ void vLedPairFour( void *pvParameters )
 	
 	for(;;)
 	{
-		PORTE.OUTTGL |= 0x0C;
+		PORTE.OUTTGL = 0x0C;
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
 }
