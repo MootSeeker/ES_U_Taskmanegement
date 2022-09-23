@@ -296,5 +296,7 @@ void vLoadKiller( void *pvParameters )
  		vDisplayWriteStringAtPos(1,0,"Heap: %d", heap);
  		vDisplayWriteStringAtPos(2,0,"TaskStack: %d", taskStack);
  		vDisplayWriteStringAtPos(3,0,"FreeSpace: %d", stack+heap);
+		 
+		vTaskDelay( 1000 / portTICK_RATE_MS ); // Add delay to see other features. 
 	}
 }
