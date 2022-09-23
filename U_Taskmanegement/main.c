@@ -39,16 +39,21 @@ void vLedPairTwo( void *pvParameters );
 void vLedPairThree( void *pvParameters ); 
 void vLedPairFour( void *pvParameters ); 
 
+//Add vLoadKiller Task
+void vLoadKiller( void *pvParameters ); 
+
 //TaskHandle_t ledTask;
 
 // Create Taskhandles for all tasks
-#define TASK_STATE_MAX ( 5 )
+#define TASK_STATE_MAX ( 6 )
 typedef enum
 {
 	handleLed1 = 0, 
 	handleLed2 = 1, 
 	handleLed3 = 2, 
-	handleLed4 = 3,	
+	handleLed4 = 3,
+	handleButton = 4, 
+	handleLoadKiller = 5,	
 	
 }enTaskHandle;
 
@@ -79,7 +84,7 @@ int main(void)
 							(const char *) "btTask",	// Task Name
 							configMINIMAL_STACK_SIZE,	// Stack grösse
 							NULL,						// Übergabe Wert
-							3,							// Prio
+							1,							// Prio
 							NULL);						// Handle
 	configASSERT( task_status == pdPASS );				// Prüfen ob der Task korrekt erstellt wurde
 	
@@ -113,6 +118,14 @@ int main(void)
 							NULL,
 							1,
 							&task_state[handleLed4].handle);
+	configASSERT( task_status == pdPASS ); 
+	
+	task_status = xTaskCreate( vLoadKiller, 
+								(const char *) "lKiller", 
+								configMINIMAL_STACK_SIZE, 
+								NULL, 
+								4, 
+								&task_state[handleLoadKiller].handle); 
 	configASSERT( task_status == pdPASS ); 
 	
 	vDisplayClear();
@@ -264,5 +277,24 @@ void vLedPairFour( void *pvParameters )
 		vTaskSuspend( NULL );	//Suspend it self 
 		PORTE.OUTTGL = 0x0C;
 		vTaskDelay(100 / portTICK_RATE_MS); 
+	}
+}
+
+void vLoadKiller( void *pvParameters )
+{
+	/* Parameters not used in this task. */
+	( void ) pvParameters; 
+	
+	for( ;; )
+	{
+ 		uint32_t stack = get_mem_unused();
+ 		uint32_t heap = xPortGetFreeHeapSize();
+ 		uint32_t taskStack = uxTaskGetStackHighWaterMark(task_state[handleLoadKiller].handle);
+		 
+ 		vDisplayClear();
+ 		vDisplayWriteStringAtPos(0,0,"Stack: %d", stack);
+ 		vDisplayWriteStringAtPos(1,0,"Heap: %d", heap);
+ 		vDisplayWriteStringAtPos(2,0,"TaskStack: %d", taskStack);
+ 		vDisplayWriteStringAtPos(3,0,"FreeSpace: %d", stack+heap);
 	}
 }
