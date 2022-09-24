@@ -5,33 +5,18 @@
  * Author : chaos
  */ 
 
-//#include <avr/io.h>
-#include "avr_compiler.h"
-#include "pmic_driver.h"
-#include "TC_driver.h"
-#include "clksys_driver.h"
-#include "sleepConfig.h"
-#include "port_driver.h"
+// Main include file
+#include "main.h"
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "event_groups.h"
-#include "stack_macros.h"
+// Task handle structure
+typedef struct
+{
+	TaskHandle_t handle;
+	
+}st_task_state_t;
 
-#include "mem_check.h"
+st_task_state_t task_state[ TASK_STATE_MAX ];
 
-#include "init.h"
-#include "utils.h"
-#include "errorHandler.h"
-#include "NHD0420Driver.h"
-
-#include "ButtonHandler.h"
-
-
-extern void vApplicationIdleHook( void );
-//void vLedBlink(void *pvParameters);
-void vButtonTask(void *pvParameters);
 
 // Led blinks tasks which contain each two leds
 void vLedPairOne( void *pvParameters ); 
@@ -39,33 +24,14 @@ void vLedPairTwo( void *pvParameters );
 void vLedPairThree( void *pvParameters ); 
 void vLedPairFour( void *pvParameters ); 
 
-//Add vLoadKiller Task
+//vLoadKiller Task
 void vLoadKiller( void *pvParameters ); 
 
-//TaskHandle_t ledTask;
+// Button Task
+void vButtonTask( void *pvParameters );
 
-// Create Taskhandles for all tasks
-#define TASK_STATE_MAX ( 6 )
-typedef enum
-{
-	handleLed1 = 0, 
-	handleLed2 = 1, 
-	handleLed3 = 2, 
-	handleLed4 = 3,
-	handleButton = 4, 
-	handleLoadKiller = 5,	
-	
-}enTaskHandle;
-
-typedef struct 
-{
-	TaskHandle_t handle; 	
-	
-}st_task_state_t;
-
-st_task_state_t task_state[ TASK_STATE_MAX ]; 
-
-
+// Application Idel Hook 
+extern void vApplicationIdleHook( void );
 void vApplicationIdleHook( void )
 {	
 	
@@ -138,7 +104,7 @@ int main(void)
 }
 
 
-void vButtonTask(void *pvParameters) 
+void vButtonTask( void *pvParameters ) 
 {
 	initButtons();
 	vTaskDelay(3000);
